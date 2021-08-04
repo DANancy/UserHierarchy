@@ -27,6 +27,7 @@ $ python -m unittest -v test
 3.  run test coverage report to gauge the effectiveness of tests
 ```
 $ pip install coverage
+$ coverage run -m unittest
 $ coverage html
 $ open htmlcov/index.html
 ```
