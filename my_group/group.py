@@ -17,6 +17,20 @@ class Group:
             raise TypeError(f"Roles needs to be a list and could not be {type(users)}.")
         self.users = {user['Id']: user for user in users}
 
+    def _findSubOrdinate(self, roleID, subOrdinates,searchedRoleID=None):
+        if searchedRoleID is None:
+            searchedRoleID = []
+        searchedRoleID.append(roleID) # closed list used to detect circular relationship
+        getSubOrdinateRoles = [self.roles[role]['Id'] for role in self.roles.keys() if
+                               self.roles[role]['Parent'] == roleID]
+        for eachroleID in getSubOrdinateRoles:
+            if eachroleID in searchedRoleID:
+                raise ValueError(f"Circular relationship detected that role ID as {eachroleID} has been searched.")
+            for user in self.users.keys():  # Depth-First-Search
+                if eachroleID == self.users[user]['Role']:
+                    subOrdinates.append(self.users[user])
+            self._findSubOrdinate(eachroleID, subOrdinates, searchedRoleID)  # recursive function to find out all subordinates
+
    # generate a subordinates list under user id
     def getSubOrdinates(self, id):
         if not isinstance(id,int):
@@ -26,28 +40,16 @@ class Group:
         if id not in self.users.keys():
             raise ValueError(f"This user with user ID {id} does not exist.")
 
-        subOrdinates = []
         searchUser = self.users[id]
         searchRoleID = searchUser['Role']
         if searchRoleID not in self.roles.keys() :
             raise ValueError(f"This user has role id {searchRoleID} does not exist.")
 
         if searchRoleID not in self.parents.keys():
-            return subOrdinates # this role does not have any subordinates
+            return [] # this role does not have any subordinates
 
-        searchedRoleID = [] # closed list used to detect circular relationship
-        def findSubOrdinate(self,roleID):
-            searchedRoleID.append(roleID)
-            getSubOrdinateRoles = [self.roles[role]['Id'] for role in self.roles.keys() if self.roles[role]['Parent'] == roleID]
-            for eachroleID in getSubOrdinateRoles:
-                if eachroleID in searchedRoleID:
-                    raise ValueError(f"Circular relationship detected that role ID as {eachroleID} has been searched.")
-                for user in self.users.keys(): # Depth-First-Search
-                    if eachroleID == self.users[user]['Role']:
-                        subOrdinates.append(self.users[user])
-                findSubOrdinate(self, eachroleID) # recursive function to find out all subordinates
-
-        findSubOrdinate(self,searchRoleID)
+        subOrdinates = []
+        self._findSubOrdinate(searchRoleID,subOrdinates)
         return subOrdinates
 
 if __name__ == '__main__':
@@ -121,11 +123,6 @@ if __name__ == '__main__':
             "Id": 7,
             "Name": "Steve Trainer",
             "Role": 7
-        },
-        {
-            "Id": 8,
-            "Name": "Steve Trainer",
-            "Role": 8
         }
     ]
     group = Group()
