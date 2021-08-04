@@ -1,6 +1,6 @@
 ## User Hierarchy
 
-###Project Structure
+### Project Structure
 * my_group: group package
 * test.py: unittest file contains 9 test cases
     * test_0_set_roles
@@ -13,7 +13,7 @@
     * test_7_get_subordinates
     * test_8_circular_detected
 
-###Project Setup
+### Project Setup
 1. clone the whole project
 ```
 $ git clone https://github.com/DANancy/Web-Scraper-Starter.git
