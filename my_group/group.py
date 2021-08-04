@@ -1,7 +1,7 @@
 # Nancy Cai
 # Aug 2021
 # Currently uses recursive function to find out all subordinates under user id
-# Furture work for optimization: does the role id has order?
+# Furture work for optimization: does the role id has order? remove for loops to try other algorithm
 
 class Group:
     # generate a role map with role id as key for easy searching
