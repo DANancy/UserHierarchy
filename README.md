@@ -16,7 +16,7 @@
 ### Project Setup
 1. clone the whole project
 ```
-$ git clone https://github.com/DANancy/Web-Scraper-Starter.git
+$ git clone https://github.com/DANancy/UserHierarchy.git
 ```
 
 2. run unittest
